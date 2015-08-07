@@ -1,0 +1,26 @@
+Fitting Simulated Data
+========================================================
+```{r}
+require(ggplot2)
+```
+
+
+```{r}
+set.seed(808)
+qplot(rexp(1000, 0.2))
+
+my.exps <- rep.int(0, 40000); dim(my.exps) <- c(40, 1000)
+
+for(i in 1:1000) {
+    my.exps[, i] <- rexp(40, 0.2)
+}
+
+qplot(apply(my.exps, 2, mean))
+qplot(apply(my.exps, 2, sd))
+a <- rexp(1000, 0.2)
+qplot(a)
+
+```
+
+
+
