@@ -1,13 +1,30 @@
 Fitting Simulated Data
 ========================================================
-```{r}
+```{r echo = FALSE}
 require(ggplot2)
 ```
+### Introduction
 
+In this exercise, we are comparing simulated data to its theoretical distribution, specifically the exponential distribution. Rather than sampling `rexp` 1,000 times, we will generate 1,000 sets of 40 observations. Because the population mean and standard deviation are known, we will use this information to judge how well our simulated data fit the expected distribution
 
+### Simulation
 ```{r}
 set.seed(808)
-qplot(rexp(1000, 0.2))
+
+e <- exp(1)
+test <- function(x) {.2 * e ^ (-0.2 * x)}
+
+first.obs <- rexp(1000, 0.2)
+first.obs2 <- data.frame(first.obs)
+
+ggplot(first.obs2, aes(x = first.obs)) +
+    geom_histogram(aes(y = ..density..)) + 
+    stat_function(fun = test, colour = "blue") +
+    stat_function(fun = dexp, colour = "green")
+```
+Looking first at a histogram of 1,000 simulated observations, we can see that it looks generally like we'd expect, with some deviation
+
+```{r}
 
 my.exps <- rep.int(0, 40000); dim(my.exps) <- c(40, 1000)
 
