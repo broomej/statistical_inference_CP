@@ -1,6 +1,7 @@
 Fitting Simulated Data
 ========================================================
-```{r message = FALSE}
+
+```r
 require(ggplot2)
 require(MASS)
 ```
@@ -8,7 +9,8 @@ require(MASS)
 In this exercise, we are comparing simulated data to its theoretical distribution, specifically the exponential distribution. For all simulated data, we will specify that `rate = 0.2`, meaning that the `mean` and `standard deviation` will both converge to `1 / rate == 5`. Looking first at a histogram of 1,000 simulated observations, we can see that it looks generally like we'd expect, with some deviation. Plotting an exponential fit with the rate calculated from the simulated data shows that the fit is very good.
 
 ### Simulation
-```{r message = FALSE}
+
+```r
 set.seed(808)
 first.obs <- data.frame(rexp(1000, 0.2))
 colnames(first.obs) <- "V1"
@@ -21,10 +23,13 @@ ggplot(first.obs, aes(x = V1)) +
                  args = list(rate = fit1$estimate))
 ```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+
 I originally plotted an exponential fit with `rate = 0.2`, but the estimated rate was so close to the actual value that it was impossible to see any difference on this scale.
 
 Lets now look at the distribution of 1,000 groups of 40 observations. 
-```{r message = FALSE}
+
+```r
 second.obs <- rep.int(0, 40000); dim(second.obs) <- c(40, 1000)
 for(i in 1:1000) {
     second.obs[, i] <- rexp(40, 0.2)
@@ -40,20 +45,60 @@ ggplot(exp.means, aes(x = V1)) +
                   color = "blue")
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
 The distribution is a little "lumpier", but it's also clustered more tightly about the mean. A standard normal fit is plotted on top of the histogram
 ### Sample mean vs theoretical mean
 
-```{r means}
+
+```r
 mean(first.obs$V1)
+```
+
+```
+## [1] 5.023439
+```
+
+```r
 mean(exp.means$V1)
+```
+
+```
+## [1] 5.005719
 ```
 We see that the sample mean of both sets converge to the theoretical mean (`5 == 1 / rate`).
 
 ### Sample variance vs theoretical variance
-```{r variance}
+
+```r
 sd(first.obs$V1)
+```
+
+```
+## [1] 4.945423
+```
+
+```r
 sd(exp.means$V1)
+```
+
+```
+## [1] 0.7943972
+```
+
+```r
 var(first.obs$V1)
+```
+
+```
+## [1] 24.45721
+```
+
+```r
 var(exp.means$V1)
+```
+
+```
+## [1] 0.6310669
 ```
 Here we see a significant difference between the grouped observations. The standard deviation of the first 1,000 observations converge to the expected `1 / rate = 5`, but the standard devations of the means is much smaller. 
